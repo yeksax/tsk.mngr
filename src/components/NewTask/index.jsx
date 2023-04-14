@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import Divisor from "../Divisor";
 
@@ -54,7 +54,7 @@ function NewTask({ handleCreation }) {
 
 	function createTask() {
 		let filteredTags = tags.filter((tag) => {
-			return tag != "";
+			return tag != null;
 		});
 
 		let metaTags = filteredTags.map((tag) => tag.toLowerCase());
@@ -78,8 +78,10 @@ function NewTask({ handleCreation }) {
 		setTags([]);
 	}
 
+	const inputRef = useRef();
+
 	function createTag() {
-		setTags([...tags, "Tag"]);
+		setTags([...tags, "tag"]);
 	}
 
 	function handleTagInput(e) {
@@ -91,6 +93,27 @@ function NewTask({ handleCreation }) {
 		setTags(newTags);
 	}
 
+	function removeEmptyElements(e) {
+		let element = e.target;
+
+		if (element.value == "") {
+			setTags(
+				tags.map((tag) => {
+					return tag == "" ? null : tag;
+				})
+			);
+		}
+	}
+
+	useEffect(() => {
+		if (
+			inputRef.current != undefined &&
+			document.activeElement.tagName != "INPUT"
+		) {
+			inputRef.current.focus();
+		}
+	}, [tags]);
+
 	return (
 		<div className='card'>
 			<div className='card-head'>
@@ -98,7 +121,7 @@ function NewTask({ handleCreation }) {
 					className={"card-head-title"}
 					defaultValue='Nova Task'
 					onKeyDown={handleKeyboardInput}
-					onClick={clearIfPlaceholder}
+					onFocus={clearIfPlaceholder}
 					ref={titleRef}
 					style={styles.inputContainer}
 				/>
@@ -113,7 +136,7 @@ function NewTask({ handleCreation }) {
 				<textarea
 					className={"card-body-description"}
 					defaultValue='Descrição'
-					onClick={clearIfPlaceholder}
+					onFocus={clearIfPlaceholder}
 					onKeyDown={handleKeyboardInput}
 					ref={descriptionRef}
 					style={{ ...styles.inputContainer, fontSize: "13px" }}
@@ -127,17 +150,22 @@ function NewTask({ handleCreation }) {
 						backgroundColor='#565D76'
 						onClick={createTag}
 					/>
-					{tags.map((tag, index) => (
-						<Button key={index} type='input-tag' tag={tag}>
-							<input
-								className='in-creation-tag'
-								type='text'
-								defaultValue={tag}
-								data-key={index}
-								onInput={handleTagInput}
-							/>
-						</Button>
-					))}
+					{tags.map(
+						(tag, index) =>
+							tag != null && (
+								<Button key={index} type='input-tag' tag={tag}>
+									<input
+										className='in-creation-tag'
+										type='text'
+										defaultValue={tag}
+										data-key={index}
+										ref={inputRef}
+										onBlur={removeEmptyElements}
+										onInput={handleTagInput}
+									/>
+								</Button>
+							)
+					)}
 				</div>
 
 				<div className='card-footer-actions'>

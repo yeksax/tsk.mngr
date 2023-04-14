@@ -36,31 +36,6 @@ textarea {
             height: 100%;
             font-size: 15px;
 
-            &.code {
-                font-family: "Source Code Pro";
-                background-color: #1e1e2e;
-                border-radius: 4px;
-                padding: 4px 12px;
-                box-sizing: border-box;
-                color: #cdd6f4;
-                font-size: 14px;
-
-                & {
-                    scrollbar-width: none;
-                    scrollbar-color: #313244 #292929;
-                }
-
-                &::-webkit-scrollbar-track {
-                    background: #292929;
-                    border-radius: 8px;
-                }
-
-                &::-webkit-scrollbar-thumb {
-                    background-color: #313244;
-                    border-radius: 10px;
-                }
-            }
-
             & {
                 scrollbar-width: none;
                 scrollbar-color: #292929 #d9d9d9;
@@ -95,6 +70,39 @@ textarea {
             gap: 8px;
         }
 
+    }
+
+    &.note{
+        .card-head-status{
+            display: none;
+        }
+    }
+
+    &.code {
+        textarea {
+            font-family: "Source Code Pro";
+            background-color: #1e1e2e;
+            border-radius: 4px;
+            padding: 4px 12px;
+            box-sizing: border-box;
+            color: #cdd6f4;
+            font-size: 14px;
+
+            & {
+                scrollbar-width: none;
+                scrollbar-color: #313244 #292929;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #292929;
+                border-radius: 8px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #313244;
+                border-radius: 10px;
+            }
+        }
     }
 }
 

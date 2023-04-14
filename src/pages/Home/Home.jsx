@@ -5,7 +5,9 @@ import NewTask from "../../components/NewTask";
 import SearchBar from "../../components/Search";
 
 function Home() {
-	let [tasks, setTasks] = useState(JSON.parse(localStorage.getItem("tasks")));
+	let [tasks, setTasks] = useState(
+		JSON.parse(localStorage.getItem("tasks")) || []
+	);
 	let [filteredTasks, setFilteredTasks] = useState(tasks);
 	let [query, setQuery] = useState("");
 
@@ -35,9 +37,16 @@ function Home() {
 		let results = [];
 
 		if (mode === "base") {
-			results = tasks.filter((task) =>
-				JSON.stringify(task).includes(query)
-			);
+			results = tasks
+				.filter((task) => JSON.stringify(task).includes(query))
+				.sort((x, y) => {
+					if (x.isComplete > y.isComplete) {
+						return 1;
+					}
+					if (x.isComplete < y.isComplete) {
+						return -1;
+					}
+				});
 		}
 
 		return results;

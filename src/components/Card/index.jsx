@@ -3,7 +3,7 @@ import "./style.scss";
 import Divisor from "../Divisor";
 import Button from "../Button";
 
-function Card({ mainTask, saveMainChanges, deleteTask, index }) {
+function Card({ mainTask, saveMainChanges, deleteTask }) {
 	const [task, setTask] = useState(mainTask);
 
 	const [editing, setEditing] = useState(false);
@@ -20,6 +20,7 @@ function Card({ mainTask, saveMainChanges, deleteTask, index }) {
 
 		if (event.key == "Escape") {
 			setEditing(false);
+			cancelChanges;
 			target.blur();
 		}
 	}
@@ -34,7 +35,7 @@ function Card({ mainTask, saveMainChanges, deleteTask, index }) {
 
 	function toggleEditMode() {
 		setEditing(true);
-		titleRef.current.focus();
+		descriptionRef.current.focus();
 	}
 
 	async function saveChanges() {
@@ -52,12 +53,24 @@ function Card({ mainTask, saveMainChanges, deleteTask, index }) {
 		descriptionRef.current.value = task.description;
 	}
 
+	function handleTagInput(e) {
+		let element = e.target;
+		element.style.width = `${element.value.length}ch`;
+		let newTags = [...task.tags];
+		console.log(element);
+		console.log(newTags, task.tags);
+		newTags[element.dataset.key] = element.value;
+		element.parentNode.setAttribute("tag", element.value);
+		console.log(newTags);
+		setTask({ ...task, tags: [...newTags] });
+	}
+
 	useEffect(() => {
 		saveMainChanges(task.id, task);
 	}, [task]);
 
 	return (
-		<div className='card'>
+		<div className={"card " + task.tags.join(" ")}>
 			<div className='card-head'>
 				<input
 					className={"card-head-title" + (editing ? " editing" : "")}
@@ -66,17 +79,16 @@ function Card({ mainTask, saveMainChanges, deleteTask, index }) {
 					ref={titleRef}
 					readOnly={!editing}
 				/>
-				{!task.isNote && (
-					<span className='card-head-status'>
-						<Button
-							text={task.isComplete ? "Completo" : "Incompleto"}
-							backgroundColor={
-								task.isComplete ? "#4FE567" : "#fd0a2a"
-							}
-							onClick={handleCompletionUpdate}
-						/>
-					</span>
-				)}
+
+				<span className='card-head-status'>
+					<Button
+						text={task.isComplete ? "Completo" : "Incompleto"}
+						backgroundColor={
+							task.isComplete ? "#4FE567" : "#fd0a2a"
+						}
+						onClick={handleCompletionUpdate}
+					/>
+				</span>
 			</div>
 
 			<Divisor />
@@ -84,9 +96,7 @@ function Card({ mainTask, saveMainChanges, deleteTask, index }) {
 			<div className='card-body'>
 				<textarea
 					className={
-						"card-body-description " +
-						task.tags.join(" ") +
-						(editing ? " editing" : "")
+						"card-body-description " + (editing ? " editing" : "")
 					}
 					defaultValue={task.description}
 					readOnly={!editing}
@@ -99,7 +109,19 @@ function Card({ mainTask, saveMainChanges, deleteTask, index }) {
 				<div className='card-footer-tags'>
 					{task.tags &&
 						task.tags.map((tag, index) => (
-							<Button key={index} text={tag} tag={tag} />
+							<Button key={index} tag={tag}>
+								<input
+									type='text'
+									className='in-creation-tag'
+									defaultValue={tag}
+									readOnly={!editing}
+									data-key={index}
+									style={{
+										width: `${tag.length}ch`,
+									}}
+									onInput={handleTagInput}
+								/>
+							</Button>
 						))}
 				</div>
 
