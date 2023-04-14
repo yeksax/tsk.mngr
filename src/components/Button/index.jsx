@@ -16,6 +16,9 @@ function Button({ text, backgroundColor, onClick, children, tag }) {
 		background = backgroundColor;
 	}
 
+	if(children !== undefined){
+		console.log(children.props);
+	}
 
 	return (
 		<span

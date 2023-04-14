@@ -7,16 +7,22 @@ function SearchBar({ query, setQuery }) {
 		setQuery(event.target.value);
 	}
 
-    function clearQuery() {
-        setQuery("");
-    }
+	function clearQuery() {
+		setQuery("");
+	}
 
 	return (
 		<div className='search-bar'>
-			{query != "" && <FontAwesomeIcon className="clear-query" icon={faXmark} onClick={clearQuery} />}
+			{query != "" && (
+				<FontAwesomeIcon
+					className='clear-query'
+					icon={faXmark}
+					onClick={clearQuery}
+				/>
+			)}
 			<input
 				type='text'
-				placeholder='Search'
+				placeholder='Pesquisar...'
 				onInput={handleQueryInput}
 				className={query != "" && "not-empty"}
 			/>

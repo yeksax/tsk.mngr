@@ -85,9 +85,9 @@ function NewTask({ handleCreation }) {
 	function handleTagInput(e) {
 		let element = e.target;
 		element.style.width = `${element.value.length}ch`;
-		let newTags = tags;
+		let newTags = [...tags];
 		newTags[element.dataset.key] = element.value;
-		element.setAttribute("tag", element.value);
+		element.parentNode.setAttribute("tag", element.value);
 		setTags(newTags);
 	}
 
@@ -134,7 +134,7 @@ function NewTask({ handleCreation }) {
 								type='text'
 								defaultValue={tag}
 								data-key={index}
-								onChange={handleTagInput}
+								onInput={handleTagInput}
 							/>
 						</Button>
 					))}
