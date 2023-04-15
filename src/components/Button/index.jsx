@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./style.scss";
 
-function Button({ text, backgroundColor, onClick, children, tag }) {
+function Button({ text, backgroundColor, onClick, children, tag, size }) {
 	const backgroundColorMap = {
 		code: "#8a4af3",
 		note: "#e3bd48",
@@ -19,7 +19,7 @@ function Button({ text, backgroundColor, onClick, children, tag }) {
 	return (
 		<span
 			onClick={onClick && onClick}
-			className='button'
+			className={"button " + size}
 			style={{
 				background: background,
 				cursor: onClick && "pointer",

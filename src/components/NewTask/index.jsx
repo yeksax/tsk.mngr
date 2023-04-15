@@ -115,7 +115,7 @@ function NewTask({ handleCreation }) {
 	}, [tags]);
 
 	return (
-		<div className='card new-task'>
+		<div className='card no-animation'>
 			<div className='card-head'>
 				<input
 					className={"card-head-title"}

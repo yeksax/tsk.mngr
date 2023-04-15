@@ -31,10 +31,8 @@
 		display: grid;
 
 		grid-template-columns: repeat(3, 1fr);
-		grid-template-rows: repeat(auto-fit, 1fr);
 		gap: 32px 40px;
 		transition: all 1s ease-in-out;
-		height: 80%;
 	}
 }
 

@@ -4,4 +4,9 @@
     border-radius: 4px;
     color: #f5f5f7;
     font-size: 13px;
+
+    &.big{
+        padding: .3rem .9rem;
+        font-size: 15px;
+    }
 }

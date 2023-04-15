@@ -1,0 +1,90 @@
+.backblur {
+  width: 100vw;
+  height: 100vh;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: linear-gradient(to bottom right, #00000040, #00000010);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  animation: fade-in linear .3s;
+
+  &.close {
+    animation: fade-out linear .2s forwards;
+  }
+}
+
+.modal {
+  width: 400px;
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  background: linear-gradient(to bottom right, #ffffff80, #ffffff50);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #ffffff50;
+
+
+  .modal-header {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+
+    .modal-header-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+
+      strong {
+        font-weight: 600;
+      }
+    }
+
+    .close-modal {
+
+      .close-modal-icon {
+        font-size: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .modal-footer {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  20% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

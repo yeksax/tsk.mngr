@@ -12,11 +12,11 @@ textarea {
     display: flex;
     flex-direction: column;
     background-color: #f5f5f7;
-    box-shadow: 8px 0px 20px #00000025;
+    box-shadow: 0 4px 16px #00000015;
     border-radius: 8px;
     gap: 12px;
 
-    &:not(.new-task) {
+    &:not(.no-animation) {
         animation: popup .2s linear forwards;
     }
 

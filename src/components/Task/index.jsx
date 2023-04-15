@@ -2,8 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import "./style.scss";
 import Divisor from "../Divisor";
 import Button from "../Button";
+import Backblur from "../Modal/backblur";
 
-function Card({ mainTask, saveMainChanges, deleteTask }) {
+export default function Task({
+	mainTask,
+	saveMainChanges,
+	promptDeleteTask,
+	noFooter,
+	noInteraction,
+}) {
 	const [task, setTask] = useState(mainTask);
 
 	const [editing, setEditing] = useState(false);
@@ -26,11 +33,8 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 		}
 	}
 
-	function handleDeleteTask() {
-		cardRef.current.classList.add("deleted");
-		setTimeout(() => {
-			deleteTask(task.id);
-		}, 200);
+	function promptDelete() {
+		promptDeleteTask(task.id);
 	}
 
 	function handleCompletionUpdate() {
@@ -69,12 +73,19 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 		setTask({ ...task, tags: [...newTags] });
 	}
 
-	useEffect(() => {
+	!noInteraction && useEffect(() => {
 		saveMainChanges(task.id, task);
 	}, [task]);
 
 	return (
-		<div className={"card " + task.tags.join(" ")} ref={cardRef}>
+		<div
+			className={
+				"card " +
+				task.tags.join(" ") +
+				`${noInteraction ? " no-animation": ""}`
+			}
+			ref={cardRef}
+		>
 			<div className='card-head'>
 				<input
 					className={"card-head-title" + (editing ? " editing" : "")}
@@ -86,13 +97,15 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 				/>
 
 				<span className='card-head-status'>
-					<Button
-						text={task.isComplete ? "Completo" : "Incompleto"}
-						backgroundColor={
-							task.isComplete ? "#4FE567" : "#fd0a2a"
-						}
-						onClick={handleCompletionUpdate}
-					/>
+					{!noInteraction && (
+						<Button
+							text={task.isComplete ? "Completo" : "Incompleto"}
+							backgroundColor={
+								task.isComplete ? "#4FE567" : "#fd0a2a"
+							}
+							onClick={handleCompletionUpdate}
+						/>
+					)}
 				</span>
 			</div>
 
@@ -132,28 +145,28 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 						))}
 				</div>
 
-				<div className='card-footer-actions'>
-					<Button
-						text='Excluir'
-						backgroundColor='#F25151'
-						onClick={handleDeleteTask}
-					/>
-					{editing && (
+				{!noFooter && (
+					<div className='card-footer-actions'>
 						<Button
-							text='Cancelar'
-							backgroundColor='#565D76'
-							onClick={cancelChanges}
+							text='Excluir'
+							backgroundColor='#F25151'
+							onClick={promptDelete}
 						/>
-					)}
-					<Button
-						text={editing ? "Confirmar" : "Editar"}
-						backgroundColor='#3D81E6'
-						onClick={!editing ? toggleEditMode : saveChanges}
-					/>
-				</div>
+						{editing && (
+							<Button
+								text='Cancelar'
+								backgroundColor='#565D76'
+								onClick={cancelChanges}
+							/>
+						)}
+						<Button
+							text={editing ? "Confirmar" : "Editar"}
+							backgroundColor='#3D81E6'
+							onClick={!editing ? toggleEditMode : saveChanges}
+						/>
+					</div>
+				)}
 			</div>
 		</div>
 	);
 }
-
-export default Card;
