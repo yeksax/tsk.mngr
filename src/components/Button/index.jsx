@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./style.scss";
 
-function Button({ text, backgroundColor, onClick, children, tag }) {
+function Button({ text, backgroundColor, onClick, children, tag, completion }) {
 	const backgroundColorMap = {
 		code: "#8a4af3",
 		note: "#e3bd48",
@@ -26,6 +26,7 @@ function Button({ text, backgroundColor, onClick, children, tag }) {
 			}}
 		>
 			{children ? children : text}
+			{completion && <span className='completion'>{completion}</span>}
 		</span>
 	);
 }

@@ -4,4 +4,19 @@
     border-radius: 4px;
     color: #f5f5f7;
     font-size: 13px;
+    display: flex;
+    align-items: center;
+
+    & .completion {
+        color: #c6c6d2;
+        font-family: Source Code Pro;
+    }
+
+    & input {
+        cursor: text;
+    }
+
+    & input:not(:focus)~.completion {
+        display: none;
+    }
 }

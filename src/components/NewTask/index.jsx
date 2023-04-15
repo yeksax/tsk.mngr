@@ -5,19 +5,33 @@ import Divisor from "../Divisor";
 import "./style.scss";
 
 function NewTask({ handleCreation }) {
-	function handleKeyboardInput() {}
+	function handleKeyboardInput(e) {
+		let key = e.key;
+		let target = e.target;
+
+		let targetIsTag = target.classList.contains("in-creation-tag");
+		let completionNotEmpty = completion != "";
+
+		console.log(targetIsTag, completionNotEmpty);
+
+		if (key == "Tab" && targetIsTag && completionNotEmpty) {
+			e.preventDefault();
+			e.value = completion;
+		}
+	}
 
 	const titleRef = useRef();
 	const descriptionRef = useRef();
 
 	const [tags, setTags] = useState([]);
+	const [completion, setCompletion] = useState("");
+	const specialTags = ["code", "note"].sort();
 
 	const styles = {
 		inputContainer: {
 			backgroundColor: "#FCFCFD",
 			borderRadius: "4px",
 			padding: "4px 8px",
-			// fontFamily: "Source Code Pro",
 			boxSizing: "border-box",
 			fontSize: "16px",
 			cursor: "text !important",
@@ -38,31 +52,10 @@ function NewTask({ handleCreation }) {
 		setTags([]);
 	}
 
-	function multipleSearch(keywords, array) {
-		let includes = false;
-
-		keywords.forEach((keyword) => {
-			keyword = keyword.toLowerCase();
-
-			if (array.includes(keyword)) {
-				includes = true;
-			}
-		});
-
-		return includes;
-	}
-
 	function createTask() {
 		let filteredTags = tags.filter((tag) => {
 			return tag != null;
 		});
-
-		let metaTags = filteredTags.map((tag) => tag.toLowerCase());
-
-		let isNote = multipleSearch(
-			["note", "notes", "nota", "notas"],
-			metaTags
-		);
 
 		handleCreation({
 			title: titleRef.current.value,
@@ -70,7 +63,6 @@ function NewTask({ handleCreation }) {
 			isComplete: false,
 			tags: filteredTags,
 			id: new Date().getTime(),
-			isNote: isNote,
 		});
 
 		titleRef.current.value = "Nova Task";
@@ -81,7 +73,12 @@ function NewTask({ handleCreation }) {
 	const inputRef = useRef();
 
 	function createTag() {
-		setTags([...tags, "tag"]);
+		setCompletion("");
+		setTags([...tags, ""]);
+	}
+
+	function clearCompletion() {
+		setCompletion("");
 	}
 
 	function handleTagInput(e) {
@@ -90,6 +87,15 @@ function NewTask({ handleCreation }) {
 		let newTags = [...tags];
 		newTags[element.dataset.key] = element.value;
 		element.parentNode.setAttribute("tag", element.value);
+		let completionArray = specialTags.filter((tag) => {
+			return tag.toLowerCase().startsWith(element.value.toLowerCase());
+		});
+		if (completionArray.length > 0) {
+			setCompletion(completionArray[0].slice(element.value.length));
+		} else {
+			setCompletion("");
+		}
+
 		setTags(newTags);
 	}
 
@@ -155,7 +161,12 @@ function NewTask({ handleCreation }) {
 					{tags.map(
 						(tag, index) =>
 							tag != null && (
-								<Button key={index} type='input-tag' tag={tag}>
+								<Button
+									key={index}
+									type='input-tag'
+									tag={tag}
+									completion={completion}
+								>
 									<input
 										className='in-creation-tag'
 										type='text'
@@ -164,7 +175,9 @@ function NewTask({ handleCreation }) {
 										ref={inputRef}
 										onBlur={removeEmptyElements}
 										onInput={handleTagInput}
+										onKeyDown={handleKeyboardInput}
 										aria-label={`Nova ${tag} da nova tarefa`}
+										onFocus={clearCompletion}
 									/>
 								</Button>
 							)
