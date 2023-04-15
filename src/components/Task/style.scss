@@ -88,13 +88,12 @@ textarea {
 
     &.code {
         textarea {
-            font-family: "Source Code Pro";
-            background-color: #1e1e2e;
-            border-radius: 4px;
-            padding: 4px 12px;
-            box-sizing: border-box;
-            color: #cdd6f4;
-            font-size: 14px;
+            font-family: "Source Code Pro" !important;
+            background-color: #1e1e2e !important;
+            padding: 4px 12px !important;
+            box-sizing: border-box !important;
+            color: #cdd6f4 !important;
+            font-size: 14px !important;
 
             & {
                 scrollbar-width: none;

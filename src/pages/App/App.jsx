@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "/src/assets/styles/home.scss";
-import Card from "../../components/Card";
+import Task from "../../components/Task";
 import NewTask from "../../components/NewTask";
 import SearchBar from "../../components/Search";
 
-function Home() {
+export default function App() {
 	let [tasks, setTasks] = useState(
 		JSON.parse(localStorage.getItem("tasks")) || []
 	);
@@ -64,7 +64,7 @@ function Home() {
 
 				{filteredTasks.map((task, i) => {
 					return (
-						<Card
+						<Task
 							key={task.id}
 							mainTask={task}
 							saveMainChanges={saveMainChanges}
@@ -76,5 +76,3 @@ function Home() {
 		</div>
 	);
 }
-
-export default Home;

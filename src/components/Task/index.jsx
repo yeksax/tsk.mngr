@@ -3,10 +3,11 @@ import "./style.scss";
 import Divisor from "../Divisor";
 import Button from "../Button";
 
-function Card({ mainTask, saveMainChanges, deleteTask }) {
+export default function Task({ mainTask, saveMainChanges, deleteTask }) {
 	const [task, setTask] = useState(mainTask);
 
 	const [editing, setEditing] = useState(false);
+	const [deleting, setDeleting] = useState(false);
 
 	const titleRef = useRef();
 	const descriptionRef = useRef();
@@ -27,10 +28,18 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 	}
 
 	function handleDeleteTask() {
+		setDeleting(true);
+	}
+
+	function confirmDeleteTask() {
 		cardRef.current.classList.add("deleted");
 		setTimeout(() => {
 			deleteTask(task.id);
 		}, 200);
+	}
+
+	function cancelDeletion() {
+		setDeleting(false);
 	}
 
 	function handleCompletionUpdate() {
@@ -61,11 +70,8 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 		let element = e.target;
 		element.style.width = `${element.value.length}ch`;
 		let newTags = [...task.tags];
-		console.log(element);
-		console.log(newTags, task.tags);
 		newTags[element.dataset.key] = element.value;
 		element.parentNode.setAttribute("tag", element.value);
-		console.log(newTags);
 		setTask({ ...task, tags: [...newTags] });
 	}
 
@@ -133,11 +139,6 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 				</div>
 
 				<div className='card-footer-actions'>
-					<Button
-						text='Excluir'
-						backgroundColor='#F25151'
-						onClick={handleDeleteTask}
-					/>
 					{editing && (
 						<Button
 							text='Cancelar'
@@ -145,15 +146,38 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 							onClick={cancelChanges}
 						/>
 					)}
-					<Button
-						text={editing ? "Confirmar" : "Editar"}
-						backgroundColor='#3D81E6'
-						onClick={!editing ? toggleEditMode : saveChanges}
-					/>
+
+					{deleting ? (
+						<Button
+							text='Cancelar'
+							backgroundColor='#565D76'
+							onClick={cancelDeletion}
+						/>
+					) : (
+						!editing && (
+							<Button
+								text='Excluir'
+								backgroundColor='#F25151'
+								onClick={handleDeleteTask}
+							/>
+						)
+					)}
+
+					{deleting ? (
+						<Button
+							text='Confirmar Exclusão'
+							backgroundColor='#F25151'
+							onClick={confirmDeleteTask}
+						/>
+					) : (
+						<Button
+							text={editing ? "Confirmar" : "Editar"}
+							backgroundColor='#3D81E6'
+							onClick={!editing ? toggleEditMode : saveChanges}
+						/>
+					)}
 				</div>
 			</div>
 		</div>
 	);
 }
-
-export default Card;
