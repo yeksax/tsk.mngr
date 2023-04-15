@@ -16,6 +16,14 @@ textarea {
     border-radius: 8px;
     gap: 12px;
 
+    &:not(.new-task) {
+        animation: popup .2s linear forwards;
+    }
+
+    &.deleted {
+        animation: popdown .2s linear forwards;
+    }
+
     .card-head {
         display: flex;
         align-items: center;
@@ -72,8 +80,8 @@ textarea {
 
     }
 
-    &.note{
-        .card-head-status{
+    &.note {
+        .card-head-status {
             display: none;
         }
     }
@@ -124,5 +132,33 @@ textarea:read-write,
 
     50% {
         opacity: 0;
+    }
+}
+
+@keyframes popup {
+    0% {
+        scale: 0;
+    }
+
+    60% {
+        scale: 1.1;
+    }
+
+    100% {
+        scale: 1;
+    }
+}
+
+@keyframes popdown {
+    0% {
+        scale: 1;
+    }
+
+    40% {
+        scale: 1.1;
+    }
+
+    100% {
+        scale: 0;
     }
 }

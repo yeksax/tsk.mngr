@@ -115,7 +115,7 @@ function NewTask({ handleCreation }) {
 	}, [tags]);
 
 	return (
-		<div className='card'>
+		<div className='card new-task'>
 			<div className='card-head'>
 				<input
 					className={"card-head-title"}
@@ -124,6 +124,7 @@ function NewTask({ handleCreation }) {
 					onFocus={clearIfPlaceholder}
 					ref={titleRef}
 					style={styles.inputContainer}
+					aria-label='Nome da nova tarefa'
 				/>
 				<span className='card-head-status'>
 					<Button backgroundColor='#565D76' text='Criando' />
@@ -140,6 +141,7 @@ function NewTask({ handleCreation }) {
 					onKeyDown={handleKeyboardInput}
 					ref={descriptionRef}
 					style={{ ...styles.inputContainer, fontSize: "13px" }}
+					aria-label='Descrição da nova tarefa'
 				/>
 			</div>
 
@@ -162,6 +164,7 @@ function NewTask({ handleCreation }) {
 										ref={inputRef}
 										onBlur={removeEmptyElements}
 										onInput={handleTagInput}
+										aria-label={`Nova ${tag} da nova tarefa`}
 									/>
 								</Button>
 							)

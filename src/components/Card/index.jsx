@@ -10,6 +10,7 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 
 	const titleRef = useRef();
 	const descriptionRef = useRef();
+	const cardRef = useRef();
 
 	function handleKeyboardInput(event) {
 		let target = event.target;
@@ -26,7 +27,10 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 	}
 
 	function handleDeleteTask() {
-		deleteTask(task.id);
+		cardRef.current.classList.add("deleted");
+		setTimeout(() => {
+			deleteTask(task.id);
+		}, 200);
 	}
 
 	function handleCompletionUpdate() {
@@ -70,7 +74,7 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 	}, [task]);
 
 	return (
-		<div className={"card " + task.tags.join(" ")}>
+		<div className={"card " + task.tags.join(" ")} ref={cardRef}>
 			<div className='card-head'>
 				<input
 					className={"card-head-title" + (editing ? " editing" : "")}
@@ -78,6 +82,7 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 					onKeyDown={handleKeyboardInput}
 					ref={titleRef}
 					readOnly={!editing}
+					aria-label='Título da tarefa'
 				/>
 
 				<span className='card-head-status'>
@@ -102,6 +107,7 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 					readOnly={!editing}
 					onKeyDown={handleKeyboardInput}
 					ref={descriptionRef}
+					aria-label='Descrição da tarefa'
 				/>
 			</div>
 
@@ -111,6 +117,7 @@ function Card({ mainTask, saveMainChanges, deleteTask }) {
 						task.tags.map((tag, index) => (
 							<Button key={index} tag={tag}>
 								<input
+									aria-label={`tag: ${tag}`}
 									type='text'
 									className='in-creation-tag'
 									defaultValue={tag}

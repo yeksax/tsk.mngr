@@ -24,7 +24,9 @@ function SearchBar({ query, setQuery }) {
 				type='text'
 				placeholder='Pesquisar...'
 				onInput={handleQueryInput}
-				className={query != "" && "not-empty"}
+				value={query}
+				className={query && "not-empty"}
+				aria-label="Pesquisar"
 			/>
 			<FontAwesomeIcon className='search-icon' icon={faMagnifyingGlass} />
 		</div>
