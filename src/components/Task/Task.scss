@@ -29,17 +29,34 @@ textarea {
         align-items: center;
         gap: 16px;
 
-        .card-head-title {
-            font-size: 20px;
-            font-weight: 600;
+        .card-title-container {
             width: 100%;
+            display: flex;
+            align-items: baseline;
+            position: relative;
+
+            .card-head-version {
+                opacity: .7;
+                margin-left: -4px;
+                font-size: 14px;
+                font-family: Source Code Pro;
+                position: absolute;
+                bottom: 0px;
+            }
+
+            .card-head-title {
+                font-size: 20px;
+                font-weight: 600;
+                width: 100%;
+                font-family: Source Code Pro;
+            }
         }
     }
 
     .card-body {
         height: 100%;
 
-        textarea {
+        .card-body-description {
             width: 100%;
             height: 100%;
             font-size: 15px;
@@ -78,6 +95,13 @@ textarea {
             gap: 8px;
         }
 
+        .card-footer-actions {
+            width: fit-content;
+        }
+
+        .card-footer-tags {
+            flex-wrap: wrap;
+        }
     }
 
     &.note {
@@ -87,9 +111,10 @@ textarea {
     }
 
     &.code {
-        textarea {
+        .card-body-description {
             font-family: "Source Code Pro" !important;
             background-color: #1e1e2e !important;
+            border-radius: 8px;
             padding: 4px 12px !important;
             box-sizing: border-box !important;
             color: #cdd6f4 !important;

@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./Search.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -26,7 +26,7 @@ function SearchBar({ query, setQuery }) {
 				onInput={handleQueryInput}
 				value={query}
 				className={query && "not-empty"}
-				aria-label="Pesquisar"
+				aria-label='Pesquisar'
 			/>
 			<FontAwesomeIcon className='search-icon' icon={faMagnifyingGlass} />
 		</div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "/src/assets/styles/home.scss";
-import Task from "../../components/Task";
-import NewTask from "../../components/NewTask";
-import SearchBar from "../../components/Search";
+import "/src/assets/styles/App.scss";
+import Task from "../../components/Task/Task";
+import NewTask from "../../components/NewTask/NewTask";
+import SearchBar from "../../components/Search/Search";
 
 export default function App() {
 	let [tasks, setTasks] = useState(
@@ -14,6 +14,14 @@ export default function App() {
 	function saveMainChanges(id, data) {
 		let allTasks = [...tasks];
 		let index = tasks.indexOf(tasks.filter((task) => task.id === id)[0]);
+
+		let similarTasks = tasks.filter((task) => task.title === data.title);
+		if (similarTasks.length - 1 > 0) {
+			data["version"] = similarTasks.length;
+		} else {
+			delete data["version"];
+		}
+
 		allTasks[index] = data;
 		setTasks(allTasks);
 	}
@@ -26,6 +34,8 @@ export default function App() {
 	}
 
 	function newTask(data) {
+		let similarTasks = tasks.filter((task) => task.title === data.title);
+		if (similarTasks.length > 0) data["version"] = similarTasks.length + 1;
 		setTasks([...tasks, data]);
 	}
 

@@ -30,11 +30,10 @@
 	.tasks {
 		display: grid;
 
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
 		grid-template-rows: repeat(auto-fit, 1fr);
-		gap: 32px 40px;
+		gap: 24px 32px;
 		transition: all 1s ease-in-out;
-		height: 80%;
 	}
 }
 

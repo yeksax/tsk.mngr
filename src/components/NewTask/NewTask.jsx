@@ -1,22 +1,37 @@
 import { useEffect, useRef, useState } from "react";
-import Button from "../Button";
-import Divisor from "../Divisor";
+import Button from "../Button/Button";
+import Divisor from "../Divisor/Divisor";
 
-import "./style.scss";
+import "./NewTask.scss";
 
 function NewTask({ handleCreation }) {
 	function handleKeyboardInput(e) {
 		let key = e.key;
 		let target = e.target;
 
-		let targetIsTag = target.classList.contains("in-creation-tag");
-		let completionNotEmpty = completion != "";
+		if (key == "Tab") {
+			let targetIsTag = target.classList.contains("in-creation-tag");
+			let completionNotEmpty = completion != "";
 
-		console.log(targetIsTag, completionNotEmpty);
+			if (targetIsTag && completionNotEmpty) {
+				e.preventDefault();
+				target.value += completion;
+				setCompletion("");
+				target.style.width = `${target.value.length}ch`;
+				let newTags = [...tags];
+				newTags[target.dataset.key] = target.value;
+				target.parentNode.setAttribute("tag", target.value);
+				setTags(newTags);
+			}
+		}
 
-		if (key == "Tab" && targetIsTag && completionNotEmpty) {
-			e.preventDefault();
-			e.value = completion;
+		if (key == "Enter") {
+			if (target.classList.contains("in-creation-tag")) {
+				createTag();
+			} else {
+				e.preventDefault();
+				createTask();
+			}
 		}
 	}
 
@@ -73,6 +88,7 @@ function NewTask({ handleCreation }) {
 	const inputRef = useRef();
 
 	function createTag() {
+		inputRef.current && inputRef.current.blur();
 		setCompletion("");
 		setTags([...tags, ""]);
 	}
@@ -90,7 +106,7 @@ function NewTask({ handleCreation }) {
 		let completionArray = specialTags.filter((tag) => {
 			return tag.toLowerCase().startsWith(element.value.toLowerCase());
 		});
-		if (completionArray.length > 0) {
+		if (completionArray.length > 0 && element.value.length > 0) {
 			setCompletion(completionArray[0].slice(element.value.length));
 		} else {
 			setCompletion("");
@@ -123,15 +139,19 @@ function NewTask({ handleCreation }) {
 	return (
 		<div className={"card new-task " + tags.join(" ")}>
 			<div className='card-head'>
-				<input
-					className={"card-head-title"}
-					defaultValue='Nova Task'
-					onKeyDown={handleKeyboardInput}
-					onFocus={clearIfPlaceholder}
-					ref={titleRef}
-					style={styles.inputContainer}
-					aria-label='Nome da nova tarefa'
-				/>
+				<div className='card-title-container'>
+					<input
+						className={"card-head-title"}
+						id='new-task-title'
+						defaultValue='Nova Task'
+						onKeyDown={handleKeyboardInput}
+						onFocus={clearIfPlaceholder}
+						ref={titleRef}
+						style={styles.inputContainer}
+						aria-label='Nome da nova tarefa'
+					/>
+				</div>
+
 				<span className='card-head-status'>
 					<Button backgroundColor='#565D76' text='Criando' />
 				</span>
@@ -143,6 +163,7 @@ function NewTask({ handleCreation }) {
 				<textarea
 					className={"card-body-description"}
 					defaultValue='Descrição'
+					id='new-task-description'
 					onFocus={clearIfPlaceholder}
 					onKeyDown={handleKeyboardInput}
 					ref={descriptionRef}

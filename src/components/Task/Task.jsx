@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import "./style.scss";
-import Divisor from "../Divisor";
-import Button from "../Button";
+import "./Task.scss";
+import Divisor from "../Divisor/Divisor";
+import Button from "../Button/Button";
 
 export default function Task({ mainTask, saveMainChanges, deleteTask }) {
 	const [task, setTask] = useState(mainTask);
@@ -68,7 +68,9 @@ export default function Task({ mainTask, saveMainChanges, deleteTask }) {
 
 	function handleTagInput(e) {
 		let element = e.target;
-		element.style.width = `${element.value.length}ch`;
+		element.style.width = `${
+			element.value.lengt > 0 ? element.value.length : 2
+		}ch`;
 		let newTags = [...task.tags];
 		newTags[element.dataset.key] = element.value;
 		element.parentNode.setAttribute("tag", element.value);
@@ -80,16 +82,30 @@ export default function Task({ mainTask, saveMainChanges, deleteTask }) {
 	}, [task]);
 
 	return (
-		<div className={"card " + task.tags.join(" ")} ref={cardRef}>
+		<div className={"card task " + task.tags.join(" ")} ref={cardRef}>
 			<div className='card-head'>
-				<input
-					className={"card-head-title" + (editing ? " editing" : "")}
-					defaultValue={task.title}
-					onKeyDown={handleKeyboardInput}
-					ref={titleRef}
-					readOnly={!editing}
-					aria-label='Título da tarefa'
-				/>
+				<div className='card-title-container'>
+					<input
+						className={
+							"card-head-title" + (editing ? " editing" : "")
+						}
+						defaultValue={task.title}
+						onKeyDown={handleKeyboardInput}
+						ref={titleRef}
+						readOnly={!editing}
+						aria-label='Título da tarefa'
+					/>
+					{task.version && !editing && (
+						<span
+							className='card-head-version'
+							style={{
+								left: `calc(${12 * task.title.length}px + 4px)`,
+							}}
+						>
+							{",#" + task.version}
+						</span>
+					)}
+				</div>
 
 				<span className='card-head-status'>
 					<Button

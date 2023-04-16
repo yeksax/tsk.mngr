@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./style.scss";
+import "./Button.scss";
 
 function Button({ text, backgroundColor, onClick, children, tag, completion }) {
 	const backgroundColorMap = {

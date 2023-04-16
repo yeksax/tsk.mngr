@@ -1,6 +1,5 @@
 .button {
     padding: 2px 8px;
-    height: fit-content;
     border-radius: 4px;
     color: #f5f5f7;
     font-size: 13px;
@@ -10,6 +9,10 @@
     & .completion {
         color: #c6c6d2;
         font-family: Source Code Pro;
+    }
+
+    &:not(:has(input)){
+        height: fit-content;
     }
 
     & input {
